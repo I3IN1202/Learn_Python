@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Kiểm tra URL</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f2f2f2;
+		}
+
+		header {
+			background-color: #333;
+			color: #fff;
+			padding: 20px;
+			text-align: center;
+			font-size: 36px;
+		}
+
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin-top: 20px;
+		}
+
+		label {
+			font-size: 20px;
+			margin-bottom: 10px;
+		}
+
+		input[type="text"] {
+			padding: 10px;
+			font-size: 16px;
+			border: none;
+			border-radius: 4px;
+			margin-bottom: 20px;
+			width: 100%;
+			max-width: 500px;
+			box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+		}
+
+		input[type="submit"] {
+			background-color: #333;
+			color: #fff;
+			border: none;
+			padding: 10px 20px;
+			font-size: 16px;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+
+		input[type="submit"]:hover {
+			background-color: #666;
+		}
+
+		.result {
+			margin-top: 20px;
+			padding: 20px;
+			background-color: #fff;
+			box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+			width: 100%;
+			max-width: 500px;
+			text-align: center;
+			display: none;
+		}
+
+		.result p {
+			font-size: 24px;
+			margin-bottom: 10px;
+		}
+
+		.result.success {
+			background-color: #c6efce;
+			color: #4f8a10;
+		}
+
+		.result.error {
+			background-color: #f8d7da;
+			color: #721c24;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		Kiểm tra URL
+	</header>
+	<form>
+		<label for="url">Nhập URL cần kiểm tra:</label>
+		<input type="text" id="url" name="url" placeholder="https://www.example.com">
+		<input type="submit" value="Kiểm tra">
+	</form>
+	<div class="result" id="result">
+		<p id="result-text"></p>
+	</div>
+	<script>
+		const form = document.querySelector('form');
+		const result = document.querySelector('#result');
+		const resultText = document.querySelector('#result-text');
+
+		form.addEventListener('submit', (event) => {
+			event.preventDefault();
+			const url = form.elements.url.value;
+			if (url.trim() !== '') {
+				fetch(`https://api.urlvoid.com/api1000/${encodeURIComponent(url)}/blacklists`).then((response) => {
+					if (response.ok) {
+						return response.text();
+					} else {
+						throw
